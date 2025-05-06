@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, Form, Button } from 'react-bootstrap';
 import { useDropzone } from 'react-dropzone';
 
@@ -18,6 +18,57 @@ export const PptxUploader = ({
     onDrop,
     accept: '.pptx',
   });
+
+  const data = {
+    title: "Sample Title",
+    content: "This is a sample content extracted from the PPTX file.",
+    slides: [
+      { slideNumber: 1, text: "Slide 1 text", title: "Sample Title" },
+      { slideNumber: 2, text: "Slide 2 text", title: "Sample Title" },
+      { slideNumber: 3, text: "Slide 3 text", title: "Sample Title" },
+      { slideNumber: 4, text: "Slide 4 text", title: "Sample Title" }
+    ]
+  };
+
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const nextSlide = () => {
+    if (currentIndex < slideData.length - 1) setCurrentIndex(currentIndex + 1);
+  };
+
+  const prevSlide = () => {
+    if (currentIndex > 0) setCurrentIndex(currentIndex - 1);
+  };
+  const slideData = data.slides || [];
+  const slide = slideData[currentIndex];
+
+  const jsonData = JSON.stringify(data, null, 2);
+
+  const displayJsonAsSlides = () => {
+    return (
+      <div style={{
+        width: '100%',
+        height: '230px',
+        border: '1px solid #333',
+        margin: 'auto',
+        marginTop: '50px',
+        padding: '40px',
+        borderRadius: '10px',
+        background: 'white'
+      }}>
+        <h2 style={{ fontSize: '28px' }}>{slide.title}</h2>
+        <p style={{ fontSize: '18px', marginTop: '20px' }}>{slide.text}</p>
+        <div style={{ marginTop: '40px' }}>
+          <button onClick={prevSlide} disabled={currentIndex === 0} style={{ marginRight: '10px' }}>
+            Previous
+          </button>
+          <button onClick={nextSlide} disabled={currentIndex === slideData.length - 1}>
+            Next
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <Card className="shadow border-0">
@@ -59,11 +110,11 @@ export const PptxUploader = ({
           </Form>
         )}
 
-        {jsonOutput && (
+        {data && (
           <div className="mt-4">
             <h5 className="fw-bold">Generated JSON:</h5>
-            <pre className="bg-light p-3 rounded border" style={{ maxHeight: '300px', overflowY: 'auto' }}>
-              {JSON.stringify(jsonOutput, null, 2)}
+            <pre className="bg-light p-3 rounded border" style={{ maxHeight: '350px', overflowY: 'auto' }}>
+              {displayJsonAsSlides()}
             </pre>
           </div>
         )}

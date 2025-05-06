@@ -32,9 +32,14 @@ function App() {
       return;
     }
     const dummyJson = {
-      fileName: pptxFile.name,
-      text: "Example text extracted from slides",
-      input: inputValue,
+      title: "Sample Title",
+      content: "This is a sample content extracted from the PPTX file.",
+      slides: [
+        { slideNumber: 1, text: "Slide 1 text" },
+        { slideNumber: 2, text: "Slide 2 text" },
+        { slideNumber: 3, text: "Slide 3 text" },
+        { slideNumber: 4, text: "Slide 4 text" }
+      ]
     };
     setJsonOutput(dummyJson);
   };
