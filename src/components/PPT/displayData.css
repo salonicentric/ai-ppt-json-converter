@@ -1,0 +1,9 @@
+slide {
+    height: 230px;
+    border: 1px solid #333;
+    margin: auto;
+    margin-top: 50px;
+    padding: 40px;
+    border-radius: 10px;
+    background: white;
+}

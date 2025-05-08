@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Card, Form, Button } from 'react-bootstrap';
 import { useDropzone } from 'react-dropzone';
+import { PopModal } from './gadgets/popModal';
+import { DisplayData } from './PPT/displayData';
 
 export const PptxUploader = ({
   pptxFile,
@@ -13,6 +15,8 @@ export const PptxUploader = ({
   const onDrop = (acceptedFiles) => {
     handleFileChange(acceptedFiles[0]);
   };
+
+  const [displayData, setDisplayData] = useState(false);
 
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
@@ -29,46 +33,6 @@ export const PptxUploader = ({
       { slideNumber: 4, text: "Slide 4 text", title: "Sample Title" }
     ]
   };
-
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  const nextSlide = () => {
-    if (currentIndex < slideData.length - 1) setCurrentIndex(currentIndex + 1);
-  };
-
-  const prevSlide = () => {
-    if (currentIndex > 0) setCurrentIndex(currentIndex - 1);
-  };
-  const slideData = data.slides || [];
-  const slide = slideData[currentIndex];
-
-  const jsonData = JSON.stringify(data, null, 2);
-
-  const displayJsonAsSlides = () => {
-    return (
-      <div style={{
-        width: '100%',
-        height: '230px',
-        border: '1px solid #333',
-        margin: 'auto',
-        marginTop: '50px',
-        padding: '40px',
-        borderRadius: '10px',
-        background: 'white'
-      }}>
-        <h2 style={{ fontSize: '28px' }}>{slide.title}</h2>
-        <p style={{ fontSize: '18px', marginTop: '20px' }}>{slide.text}</p>
-        <div style={{ marginTop: '40px' }}>
-          <button onClick={prevSlide} disabled={currentIndex === 0} style={{ marginRight: '10px' }}>
-            Previous
-          </button>
-          <button onClick={nextSlide} disabled={currentIndex === slideData.length - 1}>
-            Next
-          </button>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <Card className="shadow border-0">
@@ -114,7 +78,9 @@ export const PptxUploader = ({
           <div className="mt-4">
             <h5 className="fw-bold">Generated JSON:</h5>
             <pre className="bg-light p-3 rounded border" style={{ maxHeight: '350px', overflowY: 'auto' }}>
-              {displayJsonAsSlides()}
+              <Button variant="secondary" onClick={() => setDisplayData(!displayData)}> {'Preview'} </Button>
+                { displayData && <PopModal showPopup={displayData}/> }
+               {/* { displayData && <DisplayData pptData={data} /> } */}
             </pre>
           </div>
         )}
