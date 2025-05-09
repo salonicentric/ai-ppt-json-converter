@@ -90,7 +90,7 @@ function App() {
       alert("Please upload a .pptx file.");
       return;
     }
-
+  }
   return (
     <>
       <AppNavbar onSetApiKeys={() => setShowOffcanvas(true)} />
@@ -113,6 +113,6 @@ function App() {
     </>
   );
 }
-}
+
 
 export default App;
