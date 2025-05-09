@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
-import { Card, Form, Button } from 'react-bootstrap';
+
+
+import { Card, Form, Button, Spinner } from 'react-bootstrap';
+
 import { useDropzone } from 'react-dropzone';
 import { PopModal } from './gadgets/popModal';
 import { DisplayData } from './PPT/displayData';
@@ -12,6 +15,11 @@ export const PptxUploader = ({
   handleSubmit,
   jsonOutput
 }) => {
+  const [extraInput, setExtraInput] = useState('');
+  const [dropdown1, setDropdown1] = useState('');
+  const [dropdown2, setDropdown2] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const onDrop = (acceptedFiles) => {
     handleFileChange(acceptedFiles[0]);
   };
@@ -23,6 +31,7 @@ export const PptxUploader = ({
     accept: '.pptx',
   });
 
+
   const data = {
     title: "Sample Title",
     content: "This is a sample content extracted from the PPTX file.",
@@ -32,12 +41,14 @@ export const PptxUploader = ({
       { slideNumber: 3, text: "Slide 3 text", title: "Sample Title" },
       { slideNumber: 4, text: "Slide 4 text", title: "Sample Title" }
     ]
-  };
+  }
 
   return (
     <Card className="shadow border-0">
       <Card.Body>
-        <h4 className="mb-4 text-primary fw-bold">Upload PPTX File</h4>
+        <h5 className="text-primary">Upload PowerPoint Template</h5>
+
+        {/* Drag and Drop Zone */}
         <div
           {...getRootProps()}
           className="border border-secondary rounded text-center py-5 px-3 mb-4 bg-white"
@@ -57,24 +68,58 @@ export const PptxUploader = ({
           />
         </div>
 
-        {pptxFile && (
-          <Form className="mb-4" onSubmit={handleSubmit}>
-            <Form.Group controlId="inputValue">
-              <Form.Label>Additional Input</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter some text"
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-              />
-            </Form.Group>
-            <Button variant="primary" type="submit" className="mt-3">
-              Submit
-            </Button>
-          </Form>
-        )}
+        {/* Form Section (Always Shown) */}
+        <Form className="mb-4" >
+          <Form.Group controlId="extraInput" className="mt-3">
+            <Form.Label>Content Requirements</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Extra details"
+              value={extraInput}
+              onChange={(e) => setExtraInput(e.target.value)}
+            />
+          </Form.Group>
 
-        {data && (
+
+      
+          <Form.Group controlId="dropdown1" className="mt-3">
+            <Form.Label>Select LLM Provider</Form.Label>
+            <Form.Select value={dropdown1} onChange={(e) => setDropdown1(e.target.value)}>
+              <option value="">Select an option</option>
+              <option value="option1">openai</option>
+            </Form.Select>
+          </Form.Group>
+
+          <Form.Group controlId="dropdown2" className="mt-3">
+            <Form.Label>Select Model</Form.Label>
+            <Form.Select value={dropdown2} onChange={(e) => setDropdown2(e.target.value)}>
+              <option value="">Select an option</option>
+              <option value="choiceA">gpt-4</option>
+              <option value="choiceB">gpt</option>
+            </Form.Select>
+          </Form.Group>
+
+          <Button variant="primary" type="submit" className="mt-4" disabled={isSubmitting}>
+            {isSubmitting ? (
+              <>
+                <Spinner
+                  as="span"
+                  animation="border"
+                  size="sm"
+                  role="status"
+                  aria-hidden="true"
+                  className="me-2"
+                />
+                Submitting...
+              </>
+            ) : (
+              'Generate Content'
+            )}
+          </Button>
+        </Form>
+
+        {/* JSON Output */}
+        {jsonOutput && (
           <div className="mt-4">
             <h5 className="fw-bold">Generated JSON:</h5>
             <pre className="bg-light p-3 rounded border" style={{ maxHeight: '350px', overflowY: 'auto' }}>
@@ -88,4 +133,3 @@ export const PptxUploader = ({
     </Card>
   );
 };
-

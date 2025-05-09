@@ -7,10 +7,13 @@ import { PptxUploader } from './components/PptxUploader';
 import 'react-toastify/dist/ReactToastify.css';
 import { updateApiKeys } from './services/ApiService';
 import 'react-toastify/dist/ReactToastify.css';
+import AppNavbar from './components/AppNavbar';
+import ApiKeyOffcanvas from './components/ApiKeyOffcanvas';
 
 
 function App() {
   const [alert, setAlert] = useState({ show: false, variant: '', message: '' });
+  const [showOffcanvas, setShowOffcanvas] = useState(false);
 
   const [invalidFields, setInvalidFields] = useState({
     anthropic: false,
@@ -82,53 +85,34 @@ function App() {
     setPptxFile(file);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = ({ inputValue, extraInput, dropdown1, dropdown2 }) => {
     if (!pptxFile) {
       alert("Please upload a .pptx file.");
       return;
     }
-    const dummyJson = {
-      title: "Sample Title",
-      content: "This is a sample content extracted from the PPTX file.",
-      slides: [
-        { slideNumber: 1, text: "Slide 1 text" },
-        { slideNumber: 2, text: "Slide 2 text" },
-        { slideNumber: 3, text: "Slide 3 text" },
-        { slideNumber: 4, text: "Slide 4 text" }
-      ]
-    };
-    setJsonOutput(dummyJson);
-  };
 
   return (
-    <Container fluid style={{ padding: '2rem', backgroundColor: '#f0f2f5' }}>
-      <Row>
-        <Col sm={4} className="mb-3">
-          <ApiKeyForm apiKey={apiKey} setApiKey={setApiKey} onSave={handleSave} invalidFields={invalidFields} />
-          {alert.show && (
-            <div className="mb-3">
-              <div className={`alert alert-${alert.variant} alert-dismissible fade show`} role="alert">
-                {alert.message}
-                <button type="button" className="btn-close" onClick={() => setAlert({ ...alert, show: false })}></button>
-              </div>
-            </div>
-          )}
-
-        </Col>
-        <Col sm={8}>
-          <PptxUploader
-            pptxFile={pptxFile}
-            handleFileChange={handleFileChange}
-            inputValue={inputValue}
-            setInputValue={setInputValue}
-            handleSubmit={handleSubmit}
-            jsonOutput={jsonOutput}
-          />
-        </Col>
-      </Row>
-    </Container>
+    <>
+      <AppNavbar onSetApiKeys={() => setShowOffcanvas(true)} />
+      <PptxUploader
+        pptxFile={pptxFile}
+        handleFileChange={handleFileChange}
+        inputValue={inputValue}
+        setInputValue={setInputValue}
+        handleSubmit={handleSubmit}
+        jsonOutput={jsonOutput}
+      />
+    <ApiKeyOffcanvas
+        show={showOffcanvas}
+        handleClose={() => setShowOffcanvas(false)}
+        apiKey={apiKey}
+        setApiKey={setApiKey}
+        onSave={handleSave}
+        invalidFields={invalidFields}
+      />
+    </>
   );
+}
 }
 
 export default App;

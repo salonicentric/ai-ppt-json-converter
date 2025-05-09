@@ -28,6 +28,16 @@
   color: #61dafb;
 }
 
+.popover {
+  min-width: 300px;
+  min-height: 150px;
+}
+.popover-header {
+  background-color: #18161b;
+  font-weight: 500;
+}
+
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
