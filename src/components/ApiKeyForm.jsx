@@ -8,21 +8,40 @@ import {
 } from 'react-bootstrap';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
-export const ApiKeyForm = ({ apiKey, setApiKey, onSave, invalidFields }) => {
+export const ApiKeyForm = ({ apiKey, setApiKey, onSave }) => {
     const [showKeys, setShowKeys] = useState({
         anthropic: false,
         openai: false,
         groq: false
     });
 
+    const [showValidationError, setShowValidationError] = useState(false);
+
     const toggleVisibility = (key) => {
         setShowKeys((prev) => ({ ...prev, [key]: !prev[key] }));
+    };
+
+    const handleSaveClick = () => {
+        const hasAnyKey = apiKey.anthropic || apiKey.openai || apiKey.groq;
+        setShowValidationError(!hasAnyKey); // Show validation if no keys are present
+
+        if (hasAnyKey) {
+            onSave(); // Submit to parent
+            setShowValidationError(false); // Hide validation error on successful save
+        }
     };
 
     return (
         <Card className="shadow border-0">
             <Card.Body>
-                <h4 className="mb-4 text-primary fw-bold">API Keys</h4>
+                <h4 className="mb-4 text-primary fw-bold">API Key Configuration</h4>
+
+                {showValidationError && (
+                    <div className="alert alert-warning">
+                        At least one API key must be provided.
+                    </div>
+                )}
+
                 <Form>
                     {/* Anthropic API Key */}
                     <Form.Group controlId="anthropicApiKey">
@@ -32,7 +51,6 @@ export const ApiKeyForm = ({ apiKey, setApiKey, onSave, invalidFields }) => {
                                 type={showKeys.anthropic ? 'text' : 'password'}
                                 placeholder="Enter your Anthropic API Key"
                                 value={apiKey.anthropic}
-                                isInvalid={invalidFields?.anthropic}
                                 onChange={(e) =>
                                     setApiKey({ ...apiKey, anthropic: e.target.value })
                                 }
@@ -43,9 +61,6 @@ export const ApiKeyForm = ({ apiKey, setApiKey, onSave, invalidFields }) => {
                             >
                                 <i className={`bi ${showKeys.anthropic ? 'bi-eye-slash' : 'bi-eye'}`}></i>
                             </InputGroup.Text>
-                            <Form.Control.Feedback type="invalid">
-                                This field is required.
-                            </Form.Control.Feedback>
                         </InputGroup>
                     </Form.Group>
 
@@ -57,7 +72,6 @@ export const ApiKeyForm = ({ apiKey, setApiKey, onSave, invalidFields }) => {
                                 type={showKeys.openai ? 'text' : 'password'}
                                 placeholder="Enter your OpenAI API Key"
                                 value={apiKey.openai}
-                                isInvalid={invalidFields?.openai}
                                 onChange={(e) =>
                                     setApiKey({ ...apiKey, openai: e.target.value })
                                 }
@@ -68,9 +82,6 @@ export const ApiKeyForm = ({ apiKey, setApiKey, onSave, invalidFields }) => {
                             >
                                 <i className={`bi ${showKeys.openai ? 'bi-eye-slash' : 'bi-eye'}`}></i>
                             </InputGroup.Text>
-                            <Form.Control.Feedback type="invalid">
-                                This field is required.
-                            </Form.Control.Feedback>
                         </InputGroup>
                     </Form.Group>
 
@@ -82,7 +93,6 @@ export const ApiKeyForm = ({ apiKey, setApiKey, onSave, invalidFields }) => {
                                 type={showKeys.groq ? 'text' : 'password'}
                                 placeholder="Enter your Groq API Key"
                                 value={apiKey.groq}
-                                isInvalid={invalidFields?.groq}
                                 onChange={(e) =>
                                     setApiKey({ ...apiKey, groq: e.target.value })
                                 }
@@ -93,13 +103,10 @@ export const ApiKeyForm = ({ apiKey, setApiKey, onSave, invalidFields }) => {
                             >
                                 <i className={`bi ${showKeys.groq ? 'bi-eye-slash' : 'bi-eye'}`}></i>
                             </InputGroup.Text>
-                            <Form.Control.Feedback type="invalid">
-                                This field is required.
-                            </Form.Control.Feedback>
                         </InputGroup>
                     </Form.Group>
 
-                    <Button variant="primary" className="mt-4" onClick={onSave}>
+                    <Button variant="primary" className="mt-4" onClick={handleSaveClick}>
                         Save API Keys
                     </Button>
                 </Form>
