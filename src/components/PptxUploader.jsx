@@ -119,13 +119,12 @@ export const PptxUploader = ({
         </Form>
 
         {/* JSON Output */}
-        {jsonOutput && (
+        { (
           <div className="mt-4">
             <h5 className="fw-bold">Generated JSON:</h5>
             <pre className="bg-light p-3 rounded border" style={{ maxHeight: '350px', overflowY: 'auto' }}>
               <Button variant="secondary" onClick={() => setDisplayData(!displayData)}> {'Preview'} </Button>
-                { displayData && <PopModal showPopup={displayData}/> }
-               {/* { displayData && <DisplayData pptData={data} /> } */}
+                { displayData && <PopModal showPopup={displayData} onClickDisplayData={setDisplayData} pptData={data}/> }
             </pre>
           </div>
         )}

@@ -1,30 +1,22 @@
 import React from 'react';
 import { useState } from 'react';
 import { Button, Modal } from 'react-bootstrap';
+import { DisplayData } from '../PPT/displayData';
 
-export const PopModal= ({showPopup}) =>{
-  const [show, setShow] = useState(false);
+export const PopModal = ({ showPopup, onClickDisplayData, pptData }) => {
 
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
 
   return (
     <>
-    
-      <Modal show={showPopup} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>Modal heading</Modal.Title>
+
+      <Modal show={showPopup} size='xl'>
+        <Modal.Header onClick={() => onClickDisplayData(false)} closeButton>
+          <Modal.Title>PPT Data</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          {"Modal body text goes here."}
+          <DisplayData pptData={pptData} />
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button variant="primary" onClick={handleClose}>
-            Save Changes
-          </Button>
         </Modal.Footer>
       </Modal>
     </>
