@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Navbar, Container, Overlay, Popover, Button } from 'react-bootstrap';
+import { Navbar, Container, Overlay, Popover, Button, Form } from 'react-bootstrap';
 import { InfoCircle } from 'react-bootstrap-icons';
 
-function AppNavbar({ onSetApiKeys }) {
+function AppNavbar({ onSetApiKeys, isDarkMode, toggleTheme }) {
   const [showPopover, setShowPopover] = useState(false);
   const [target, setTarget] = useState(null);
 
@@ -12,11 +12,22 @@ function AppNavbar({ onSetApiKeys }) {
   };
 
   return (
-    <Navbar bg="dark" expand="lg" className="px-3">
+    <Navbar bg={isDarkMode ? 'dark' : 'light'} variant={isDarkMode ? 'dark' : 'light'} expand="lg" className="px-3">
       <Container className="d-flex justify-content-between">
-        <Navbar.Brand href="#home" className="text-white"></Navbar.Brand>
-        <div style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '10px' }} onClick={handleToggle}>
-          <InfoCircle size={20} color="white" />
+        <Navbar.Brand href="#home" className={isDarkMode ? 'text-white' : 'text-dark'}>
+          
+        </Navbar.Brand>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+          <Form.Check
+            type="switch"
+            id="theme-switch"
+            label={isDarkMode ? 'Dark' : 'Light'}
+            checked={isDarkMode}
+            onChange={toggleTheme}
+          />
+          <div style={{ cursor: 'pointer' }} onClick={handleToggle}>
+            <InfoCircle size={20} color={isDarkMode ? 'white' : 'black'} />
+          </div>
         </div>
         <Overlay
           show={showPopover}

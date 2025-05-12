@@ -6,7 +6,7 @@ function ApiKeyOffcanvas({ show, handleClose, apiKey, setApiKey, onSave }) {
   return (
     <Offcanvas show={show} onHide={handleClose} placement="end">
       <Offcanvas.Header closeButton>
-        <Offcanvas.Title>API Keys</Offcanvas.Title>
+        {/* <Offcanvas.Title>API Keys</Offcanvas.Title> */}
       </Offcanvas.Header>
       <Offcanvas.Body>
         <ApiKeyForm apiKey={apiKey} setApiKey={setApiKey} onSave={onSave} />

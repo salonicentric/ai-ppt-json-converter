@@ -37,6 +37,37 @@
   font-weight: 500;
 }
 
+.app-background {
+  min-height: 100vh;
+  background: linear-gradient(140deg, #c8cfd6, #1071df);
+  padding: 1.5rem;
+}
+
+.custom-card {
+  background-color: #9a8787;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+}
+
+.page-heading {
+  font-size: 1.75rem;
+  font-weight: 600;
+  padding-bottom: 10px;
+  border-bottom: 2px solid;
+}
+
+.heading-light {
+  color: #3b3b40; /* Bootstrap primary */
+  border-color: #100f0f;
+}
+
+.heading-dark {
+  color: #eef3f4; /* Bootstrap info */
+  border-color: #959899;
+}
+
+
 
 @keyframes App-logo-spin {
   from {

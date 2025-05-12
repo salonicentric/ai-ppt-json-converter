@@ -4,7 +4,7 @@ import { useDropzone } from 'react-dropzone';
 import { PopModal } from './gadgets/popModal';
 import { DisplayData } from './PPT/displayData';
 
-export const PptxUploader = ({ pptxFile, handleFileChange, inputValue, setInputValue, handleSubmit, jsonOutput, apiKey }) => {
+export const PptxUploader = ({ pptxFile, handleFileChange, inputValue, setInputValue, handleSubmit, jsonOutput, apiKey, isDarkMode }) => {
     const [extraInput, setExtraInput] = useState('');
     const [dropdown1, setDropdown1] = useState('');
     const [dropdown2, setDropdown2] = useState('');
@@ -36,9 +36,12 @@ export const PptxUploader = ({ pptxFile, handleFileChange, inputValue, setInputV
 
 
     return (
-        <Card className="shadow border-0">
+        <Card className="custom-card shadow border-0">
             <Card.Body>
-                <h5 className="text-primary">Upload PowerPoint Template</h5>
+                <h5 className={`page-heading text-center mb-4 ${isDarkMode ? 'heading-dark' : 'heading-light'}`}>
+                    Upload PowerPoint Template
+                </h5>
+
                 {/* Drag and Drop Zone */}
                 <div {...getRootProps()} className="border border-secondary rounded text-center py-5 px-3 mb-4 bg-white" style={{ cursor: 'pointer' }}>
                     <input {...getInputProps()} />
@@ -118,16 +121,16 @@ export const PptxUploader = ({ pptxFile, handleFileChange, inputValue, setInputV
                     </Button>
                 </Form>
                 {/* JSON Output */}
-        { (
-          <div className="mt-4">
-            <h5 className="fw-bold">Generated JSON:</h5>
-            <pre className="bg-light p-3 rounded border" style={{ maxHeight: '350px', overflowY: 'auto' }}>
-              <Button variant="secondary" onClick={() => setDisplayData(!displayData)}> {'Preview'} </Button>
-                { displayData && <PopModal showPopup={displayData} onClickDisplayData={setDisplayData} pptData={data}/> }
-            </pre>
-          </div>
-        )}
-      </Card.Body>
-    </Card>
-  );
+                {(
+                    <div className="mt-4">
+                        <h5 className="fw-bold">Generated JSON:</h5>
+                        <pre className="bg-light p-3 rounded border" style={{ maxHeight: '350px', overflowY: 'auto' }}>
+                            <Button variant="secondary" onClick={() => setDisplayData(!displayData)}> {'Preview'} </Button>
+                            {displayData && <PopModal showPopup={displayData} onClickDisplayData={setDisplayData} pptData={data} />}
+                        </pre>
+                    </div>
+                )}
+            </Card.Body>
+        </Card>
+    );
 };
